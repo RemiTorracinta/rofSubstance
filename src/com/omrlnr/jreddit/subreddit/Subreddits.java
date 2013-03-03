@@ -55,14 +55,32 @@ public class Subreddits {
     public static List<Subreddit> list(User user, String param) {
         // List of subreddits
         List<Subreddit> subreddits = null;
+        List<Subreddit> nextSubs = null;
         try {
             JSONObject object = (JSONObject) Utils.get("", new URL(
-                    "http://www.reddit.com/reddits/" + param + ".json"), user.getCookie());
+                    "http://www.reddit.com/reddits/" + param + ".json?limit=100"), user.getCookie());
             JSONObject data = (JSONObject) object.get("data");
-
+            
             subreddits = initList((JSONArray) data.get("children"));
+            
+            //Have to implement for loop after 100 to account for url difference
+            for (int i = 99; i<4999; i+=100){
+            	//sleeping so as not to overload reddit servers
+            	 Thread.sleep(2000);
+            	 System.out.println(i);
+            	 String lastSubId = subreddits.get(i).getId();
+            	 JSONObject object2 = (JSONObject) Utils.get("", new URL(
+                         "http://www.reddit.com/reddits/" + param + ".json?limit=100&after=t5_" + lastSubId), user.getCookie());
+                 JSONObject data2 = (JSONObject) object2.get("data");
+                 nextSubs = initList((JSONArray) data2.get("children"));
+                 subreddits.addAll(nextSubs);
 
+            }
+            
+           
+            
         } catch (Exception e) {
+        	System.out.println("json not acquired");
             e.printStackTrace();
         }
         return subreddits;

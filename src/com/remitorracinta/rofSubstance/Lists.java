@@ -1,9 +1,14 @@
 package com.remitorracinta.rofSubstance;
-import com.omrlnr.jreddit.submissions.Submissions;
-import com.omrlnr.jreddit.submissions.Submissions.Page;
-import com.omrlnr.jreddit.submissions.Submissions.Popularity;
-import com.omrlnr.jreddit.user.User;
 
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Scanner;
+
+import com.omrlnr.jreddit.subreddit.*;
+import com.omrlnr.jreddit.user.User;
 import com.omrlnr.jreddit.utils.Utils;
 
 
@@ -11,18 +16,30 @@ public class Lists {
 
 	/**
 	 * @param args
+	 * @throws FileNotFoundException 
 	 */
-	public static void main(String[] args) {
-		User user = new User("username", "password");
-        user.connect();
+	public static void main(String[] args) throws FileNotFoundException {
+		File file = new File("src/password.txt");
+		File actsub = new File("src/act.sub.txt");
+		Scanner scanner = new Scanner(file);
+		String password = scanner.nextLine();
+		scanner.close();
+		User user = new User("RedditsOfSubstance", password);
+		Utils.setUserAgent("RedditsofSubstance V0.1");
+		
+        try {
+			user.connect();
+		} catch (Exception e) {
+			System.out.println("Couldn't connect!");
+			e.printStackTrace();
+		}
 
         List<Subreddit> subreddits = Subreddits.list(user, "popular");
-        // Alternativly use: Subreddits.listDefault(user);
 
-        for (Subreddit sr : subreddits) {
+        /*for (Subreddit sr : subreddits) {
             System.out.println(sr.getUrl() + " " + sr.getTitle());
         }
-
+        */
 
 	}
 
