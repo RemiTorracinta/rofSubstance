@@ -35,7 +35,14 @@ public class Lists {
 		}
 
         List<Subreddit> subreddits = Subreddits.list(user, "popular");
-
+        List<Subreddit> actSubList = subreddits
+        		
+        
+        fout = new FileWriter(
+        	    "Distribution_" + Double.toString(_lowerBound) + "_" + Double.toString(_highBound) + ".txt");
+        	    fileout = new PrintWriter(fout,true);
+        fileout.print(now.getTime().toString() + ", " + weight + ","+ count +"\n");
+        fileout.close();
         /*for (Subreddit sr : subreddits) {
             System.out.println(sr.getUrl() + " " + sr.getTitle());
         }

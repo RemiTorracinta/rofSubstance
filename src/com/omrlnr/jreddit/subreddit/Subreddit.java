@@ -239,4 +239,5 @@ public class Subreddit {
     public boolean isNSFW() {
         return nsfw;
     }
+    
 }
